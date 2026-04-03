@@ -1,0 +1,12 @@
+__pycache__
+*.pyc
+.git
+.gitignore
+.DS_Store
+uv.lock
+*.egg-info
+.venv
+venv
+outputs
+logs
+baseline_scores.json
