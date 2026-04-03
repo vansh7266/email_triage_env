@@ -1,0 +1,178 @@
+
+# Basic identity
+name: email_triage_env
+version: "1.0.0"
+description: >
+  A real-world reinforcement learning environment for training
+  AI agents to triage and route support emails. The agent reads
+  incoming emails and must correctly categorize them, set priority,
+  route to the correct department, and decide whether to escalate
+  to a human. Modelled on real enterprise customer support workflows
+  used by SaaS companies, e-commerce platforms, and service businesses.
+
+author: "Team Exception"
+license: "MIT"
+
+# The task category this environment belongs to
+tags:
+  - email
+  - triage
+  - nlp
+  - classification
+  - routing
+  - customer-support
+  - real-world
+  - openenv
+
+# ── OBSERVATION SPACE ──────────────────────────────────────
+# Describes what the agent SEES each step
+observation:
+  type: object
+  description: "An incoming support email with metadata"
+  fields:
+    email_id:
+      type: string
+      description: "Unique identifier for this email"
+    sender:
+      type: string
+      description: "Email address of the sender"
+    subject:
+      type: string
+      description: "Subject line of the email"
+    body:
+      type: string
+      description: "Full body content of the email"
+    urgency_hint:
+      type: string
+      nullable: true
+      description: "Optional urgency hint: low, medium, or high"
+    task_id:
+      type: integer
+      description: "Current task number: 1 (easy), 2 (medium), 3 (hard)"
+    task_description:
+      type: string
+      description: "Instructions telling the agent what to do"
+    done:
+      type: boolean
+      description: "True if this episode is complete"
+
+# ── ACTION SPACE ───────────────────────────────────────────
+# Describes what the agent DOES each step
+action:
+  type: object
+  description: "The agent's triage decision for the email"
+  fields:
+    category:
+      type: string
+      enum:
+        - billing
+        - technical_support
+        - complaint
+        - general_inquiry
+        - spam
+      description: "The category this email belongs to"
+    priority:
+      type: string
+      enum:
+        - low
+        - medium
+        - high
+      description: "How urgently this email needs a response"
+    department:
+      type: string
+      enum:
+        - finance
+        - engineering
+        - customer_success
+        - sales
+        - security
+      description: "Which department should handle this email"
+    escalate:
+      type: boolean
+      description: "True if this email needs immediate human escalation"
+    reasoning:
+      type: string
+      description: "Brief explanation of the agent's decision"
+
+# ── REWARD SPACE ───────────────────────────────────────────
+# Describes how scoring works
+reward:
+  type: object
+  range: [0.0, 1.0]
+  description: "Composite reward based on correctness of triage decision"
+  fields:
+    score:
+      type: float
+      range: [0.0, 1.0]
+      description: "Total reward score"
+    category_score:
+      type: float
+      range: [0.0, 1.0]
+      description: "Score for correct category classification"
+    priority_score:
+      type: float
+      range: [0.0, 1.0]
+      description: "Score for correct priority setting"
+    department_score:
+      type: float
+      range: [0.0, 1.0]
+      description: "Score for correct department routing"
+    escalation_score:
+      type: float
+      range: [0.0, 1.0]
+      description: "Score for correct escalation decision"
+    feedback:
+      type: string
+      description: "Human-readable explanation of the score"
+
+# ── TASKS ──────────────────────────────────────────────────
+# The 3 tasks agents are evaluated on
+tasks:
+  - id: 1
+    name: "Basic Email Categorization"
+    difficulty: easy
+    description: >
+      The agent receives a clearly written email and must identify
+      its category, priority, department, and escalation need.
+      Emails are unambiguous with obvious intent signals.
+    scoring: "All-or-nothing per field. Score = average of 4 sub-scores."
+    expected_score_range: [0.5, 1.0]
+
+  - id: 2
+    name: "Multi-Field Extraction"
+    difficulty: medium
+    description: >
+      The agent receives an email that requires careful reading.
+      Category is less obvious. Priority gets partial credit if
+      one level off. Department routing requires understanding
+      business context.
+    scoring: "Weighted average: category 35%, priority 25%, dept 25%, escalation 15%."
+    expected_score_range: [0.3, 0.9]
+
+  - id: 3
+    name: "Complex Triage with Escalation"
+    difficulty: hard
+    description: >
+      The agent receives ambiguous emails with multiple issues,
+      legal threats, churn risk, or security concerns. Escalation
+      decisions carry heavy weight. Missing a required escalation
+      results in maximum penalty. Designed to challenge frontier LLMs.
+    scoring: "Weighted average: category 30%, priority 20%, dept 20%, escalation 30%."
+    expected_score_range: [0.1, 0.7]
+
+# ── ENVIRONMENT SETTINGS ───────────────────────────────────
+settings:
+  max_steps_per_episode: 1
+  episodes_per_task: 10
+  deterministic: false
+  reset_on_done: true
+
+# ── SERVER SETTINGS ────────────────────────────────────────
+server:
+  host: "0.0.0.0"
+  port: 8000
+  endpoints:
+    reset: "POST /reset"
+    step: "POST /step"
+    state: "GET /state"
+    health: "GET /health"
