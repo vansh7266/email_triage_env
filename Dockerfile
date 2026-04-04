@@ -48,4 +48,5 @@ EXPOSE 7860
 # --host 0.0.0.0 means accept connections from outside
 # --port 7860 is the port we listen on
 # --workers 1 means one process (enough for our environment)
+ENV ENABLE_WEB_INTERFACE=true
 CMD ["uvicorn", "server.app:app", "--host", "0.0.0.0", "--port", "7860", "--workers", "1"]
