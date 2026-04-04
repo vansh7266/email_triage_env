@@ -9,6 +9,7 @@ tags:
   - openenv
   - reinforcement-learning
   - email-triage
+base_path: /web
 ---
 
 # 📧 Email Triage RL Environment
