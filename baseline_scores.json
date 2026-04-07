@@ -1,0 +1,177 @@
+{
+  "environment": "email_triage_env",
+  "team": "Team Exception",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "overall_average_score": 0.67,
+  "total_runtime_seconds": 38.5,
+  "task_results": [
+    {
+      "task": "Task 1 (Easy \u2014 Basic Categorization)",
+      "episodes": 3,
+      "average_score": 0.5,
+      "min_score": 0.25,
+      "max_score": 0.75,
+      "scores": [
+        0.25,
+        0.75,
+        0.5
+      ],
+      "details": [
+        {
+          "episode": 1,
+          "email_id": "email_002",
+          "task_id": 1,
+          "action": {
+            "category": "technical_support",
+            "priority": "high",
+            "department": "customer_success",
+            "escalate": true,
+            "reasoning": "Customer is unable to access their account, which is a critical issue requiring immediate attention."
+          },
+          "score": 0.25,
+          "feedback": "\u2713 Category correct | \u2717 Priority wrong (got 'high', expected 'medium') | \u2717 Department wrong (got 'customer_success', expected 'engineering') | \u2717 Escalation wrong (got True, expected False)"
+        },
+        {
+          "episode": 2,
+          "email_id": "email_001",
+          "task_id": 1,
+          "action": {
+            "category": "billing",
+            "priority": "high",
+            "department": "finance",
+            "escalate": true,
+            "reasoning": "The customer is disputing an incorrect invoice amount and requesting a refund, which requires immediate attention from the finance team."
+          },
+          "score": 0.75,
+          "feedback": "\u2713 Category correct | \u2713 Priority correct | \u2713 Department correct | \u2717 Escalation wrong (got True, expected False)"
+        },
+        {
+          "episode": 3,
+          "email_id": "email_003",
+          "task_id": 1,
+          "action": {
+            "category": "spam",
+            "priority": "high",
+            "department": "security",
+            "escalate": true,
+            "reasoning": "This email contains a clear phishing attempt with a suspicious link and urgent tone."
+          },
+          "score": 0.5,
+          "feedback": "\u2713 Category correct | \u2717 Priority wrong (got 'high', expected 'low') | \u2713 Department correct | \u2717 Escalation wrong (got True, expected False)"
+        }
+      ]
+    },
+    {
+      "task": "Task 2 (Medium \u2014 Multi-Field Extraction)",
+      "episodes": 3,
+      "average_score": 0.95,
+      "min_score": 0.85,
+      "max_score": 1.0,
+      "scores": [
+        1.0,
+        1.0,
+        0.85
+      ],
+      "details": [
+        {
+          "episode": 1,
+          "email_id": "email_005",
+          "task_id": 2,
+          "action": {
+            "category": "technical_support",
+            "priority": "high",
+            "department": "engineering",
+            "escalate": true,
+            "reasoning": "The customer's production application is experiencing API rate limits, causing significant disruption to their users, and they require resolution within 2 hours."
+          },
+          "score": 1.0,
+          "feedback": "Category: \u2713 (got 'technical_support', expected 'technical_support') | Priority: \u2713 (got 'high', expected 'high') | Department: \u2713 (got 'engineering', expected 'engineering') | Escalation: \u2713 (got True, expected True)"
+        },
+        {
+          "episode": 2,
+          "email_id": "email_005",
+          "task_id": 2,
+          "action": {
+            "category": "technical_support",
+            "priority": "high",
+            "department": "engineering",
+            "escalate": true,
+            "reasoning": "The customer is experiencing a critical issue with API rate limits affecting their production app, requiring immediate attention and potential escalation to their account manager."
+          },
+          "score": 1.0,
+          "feedback": "Category: \u2713 (got 'technical_support', expected 'technical_support') | Priority: \u2713 (got 'high', expected 'high') | Department: \u2713 (got 'engineering', expected 'engineering') | Escalation: \u2713 (got True, expected True)"
+        },
+        {
+          "episode": 3,
+          "email_id": "email_005",
+          "task_id": 2,
+          "action": {
+            "category": "technical_support",
+            "priority": "high",
+            "department": "engineering",
+            "escalate": false,
+            "reasoning": "The email describes a critical issue affecting 50,000 users and requires immediate resolution within 2 hours."
+          },
+          "score": 0.85,
+          "feedback": "Category: \u2713 (got 'technical_support', expected 'technical_support') | Priority: \u2713 (got 'high', expected 'high') | Department: \u2713 (got 'engineering', expected 'engineering') | Escalation: \u2717 (got False, expected True)"
+        }
+      ]
+    },
+    {
+      "task": "Task 3 (Hard \u2014 Complex Triage with Escalation)",
+      "episodes": 3,
+      "average_score": 0.57,
+      "min_score": 0.5,
+      "max_score": 0.7,
+      "scores": [
+        0.7,
+        0.5,
+        0.5
+      ],
+      "details": [
+        {
+          "episode": 1,
+          "email_id": "email_006",
+          "task_id": 3,
+          "action": {
+            "category": "technical_support",
+            "priority": "high",
+            "department": "security",
+            "escalate": true,
+            "reasoning": "Security concerns involving possible data breach require immediate escalation regardless of other factors."
+          },
+          "score": 0.7,
+          "feedback": "Category: \u2717 (got 'technical_support', expected 'complaint') | Priority: \u2713 (got 'high', expected 'high') | Department: \u2713 (got 'security', expected 'security') | Escalation: \u2713 Correct"
+        },
+        {
+          "episode": 2,
+          "email_id": "email_007",
+          "task_id": 3,
+          "action": {
+            "category": "technical_support",
+            "priority": "high",
+            "department": "engineering",
+            "escalate": true,
+            "reasoning": "Long-term customer expressing churn intent due to a critical feature breakage, requiring immediate attention from the engineering team to prevent potential loss of a valued customer."
+          },
+          "score": 0.5,
+          "feedback": "Category: \u2717 (got 'technical_support', expected 'complaint') | Priority: \u2713 (got 'high', expected 'high') | Department: \u2717 (got 'engineering', expected 'customer_success') | Escalation: \u2713 Correct"
+        },
+        {
+          "episode": 3,
+          "email_id": "email_007",
+          "task_id": 3,
+          "action": {
+            "category": "technical_support",
+            "priority": "high",
+            "department": "engineering",
+            "escalate": true,
+            "reasoning": "Long-term customer expressing churn intent due to a critical feature breakage, requiring immediate attention from the engineering team to prevent potential loss of a valued customer."
+          },
+          "score": 0.5,
+          "feedback": "Category: \u2717 (got 'technical_support', expected 'complaint') | Priority: \u2713 (got 'high', expected 'high') | Department: \u2717 (got 'engineering', expected 'customer_success') | Escalation: \u2713 Correct"
+        }
+      ]
+    }
+  ]
+}
