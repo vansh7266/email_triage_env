@@ -188,6 +188,210 @@ EMAIL_DATASET = [
             "escalate": True,
         },
     },
+
+    # ── HEALTHCARE EMAILS ─────────────────────────────────
+    {
+        "email_id": "email_008",
+        "sender": "patient.rahul@gmail.com",
+        "subject": "Wrong medication in my order",
+        "body": (
+            "Hello, I received my monthly medication delivery today but "
+            "the dosage is completely wrong. I was prescribed 10mg tablets "
+            "but received 50mg. This is dangerous. Please fix immediately."
+        ),
+        "urgency_hint": "high",
+        "task_id": 1,
+        "task_description": (
+            "Categorize this email. Choose exactly one category from: "
+            "billing, technical_support, complaint, general_inquiry, spam. "
+            "Also set priority (low/medium/high), department, escalate (true/false), "
+            "and a short reasoning."
+        ),
+        "ground_truth": {
+            "category": "complaint",
+            "priority": "high",
+            "department": "customer_success",
+            "escalate": True,
+        },
+    },
+    {
+        "email_id": "email_009",
+        "sender": "dr.mehta@hospital.org",
+        "subject": "API integration for patient records",
+        "body": (
+            "We are a hospital trying to integrate your API with our "
+            "patient records system. We have been following the documentation "
+            "but keep getting 403 errors on the /records endpoint. "
+            "Can you help us set up the correct authentication?"
+        ),
+        "urgency_hint": "medium",
+        "task_id": 1,
+        "task_description": (
+            "Categorize this email. Choose exactly one category from: "
+            "billing, technical_support, complaint, general_inquiry, spam. "
+            "Also set priority (low/medium/high), department, escalate (true/false), "
+            "and a short reasoning."
+        ),
+        "ground_truth": {
+            "category": "technical_support",
+            "priority": "medium",
+            "department": "engineering",
+            "escalate": False,
+        },
+    },
+    # ── E-COMMERCE EMAILS ─────────────────────────────────
+    {
+        "email_id": "email_010",
+        "sender": "shopper.priya@gmail.com",
+        "subject": "Wrong item delivered",
+        "body": (
+            "I ordered a blue Nike running shoe size 8 but received "
+            "a red Adidas shoe size 9. Order #ORD-48291. I need the "
+            "correct item urgently as it was a birthday gift."
+        ),
+        "urgency_hint": "high",
+        "task_id": 1,
+        "task_description": (
+            "Categorize this email. Choose exactly one category from: "
+            "billing, technical_support, complaint, general_inquiry, spam. "
+            "Also set priority (low/medium/high), department, escalate (true/false), "
+            "and a short reasoning."
+        ),
+        "ground_truth": {
+            "category": "complaint",
+            "priority": "high",
+            "department": "customer_success",
+            "escalate": False,
+        },
+    },
+    {
+        "email_id": "email_011",
+        "sender": "seller.amit@shop.com",
+        "subject": "How do I list bulk products?",
+        "body": (
+            "Hi, I am a new seller on your platform. I have around 500 "
+            "products to list. Is there a bulk upload feature? "
+            "I could not find it in the seller dashboard."
+        ),
+        "urgency_hint": "low",
+        "task_id": 1,
+        "task_description": (
+            "Categorize this email. Choose exactly one category from: "
+            "billing, technical_support, complaint, general_inquiry, spam. "
+            "Also set priority (low/medium/high), department, escalate (true/false), "
+            "and a short reasoning."
+        ),
+        "ground_truth": {
+            "category": "general_inquiry",
+            "priority": "low",
+            "department": "sales",
+            "escalate": False,
+        },
+    },
+    # ── HR / INTERNAL EMAILS ──────────────────────────────
+    {
+        "email_id": "email_012",
+        "sender": "employee.neha@company.com",
+        "subject": "Salary not credited for October",
+        "body": (
+            "My salary for October has not been credited yet. "
+            "Today is the 10th of November. I have already raised "
+            "this with my manager but got no response. "
+            "Please look into this urgently."
+        ),
+        "urgency_hint": "high",
+        "task_id": 2,
+        "task_description": (
+            "This email requires careful reading. Determine: category "
+            "(billing/technical_support/complaint/general_inquiry/spam), "
+            "priority (low/medium/high), department to route to "
+            "(finance/engineering/customer_success/sales/security), "
+            "whether to escalate, and your reasoning."
+        ),
+        "ground_truth": {
+            "category": "billing",
+            "priority": "high",
+            "department": "finance",
+            "escalate": True,
+        },
+    },
+    {
+        "email_id": "email_013",
+        "sender": "intern.ravi@company.com",
+        "subject": "Laptop access issue",
+        "body": (
+            "I joined last week as an intern and my laptop still does not "
+            "have access to the internal dev tools. I cannot push code to "
+            "the repository. My manager is Ankit Sharma. Please help."
+        ),
+        "urgency_hint": "medium",
+        "task_id": 2,
+        "task_description": (
+            "This email requires careful reading. Determine: category "
+            "(billing/technical_support/complaint/general_inquiry/spam), "
+            "priority (low/medium/high), department to route to "
+            "(finance/engineering/customer_success/sales/security), "
+            "whether to escalate, and your reasoning."
+        ),
+        "ground_truth": {
+            "category": "technical_support",
+            "priority": "medium",
+            "department": "engineering",
+            "escalate": False,
+        },
+    },
+    # ── BANKING EMAILS ────────────────────────────────────
+    {
+        "email_id": "email_014",
+        "sender": "customer.vikram@gmail.com",
+        "subject": "Unauthorized transaction on my account",
+        "body": (
+            "There is a transaction of Rs 45,000 on my account that I "
+            "did not make. It was done at 3 AM last night from a location "
+            "I have never been to. I think my card has been cloned. "
+            "Please block my card and investigate immediately."
+        ),
+        "urgency_hint": None,
+        "task_id": 3,
+        "task_description": (
+            "This is a complex email with potential fraud. "
+            "Determine the PRIMARY category, appropriate priority, best "
+            "department to handle it first, whether immediate human "
+            "escalation is needed, and detailed reasoning. "
+            "Note: potential fraud always requires immediate escalation."
+        ),
+        "ground_truth": {
+            "category": "complaint",
+            "priority": "high",
+            "department": "security",
+            "escalate": True,
+        },
+    },
+    {
+        "email_id": "email_015",
+        "sender": "business.owner@startup.in",
+        "subject": "Need to upgrade plan but website is down",
+        "body": (
+            "I have been trying to upgrade my subscription from Basic to "
+            "Enterprise for the past 2 days but your payment page keeps "
+            "crashing. I am losing customers because of the feature limits. "
+            "This is costing me money every hour. Fix this NOW."
+        ),
+        "urgency_hint": None,
+        "task_id": 3,
+        "task_description": (
+            "This is a complex email with both a technical issue and "
+            "business urgency. Determine the PRIMARY category, appropriate "
+            "priority, best department, whether to escalate, and reasoning. "
+            "Note: revenue-impacting issues need expedited handling."
+        ),
+        "ground_truth": {
+            "category": "technical_support",
+            "priority": "high",
+            "department": "engineering",
+            "escalate": True,
+        },
+    },
 ]
 def grade_task1(action: EmailAction, ground_truth: dict) -> EmailReward:
     cat_score = 1.0 if action.category == ground_truth["category"] else 0.0
@@ -341,6 +545,7 @@ def grade_task3(action: EmailAction, ground_truth: dict) -> EmailReward:
     )
 class EmailTriageEnvEnvironment:
     def __init__(self):
+        self.episode_scores = []
         self.current_email: dict = {}
         self.current_task: int = 1
         self.step_count: int = 0
@@ -390,6 +595,12 @@ class EmailTriageEnvEnvironment:
                 feedback=f"Invalid action format: {str(e)}",
             )
             self.done = True
+            self.episode_scores.append(reward.score)
+            if len(self.episode_scores) >= 3:
+                avg = sum(self.episode_scores[-3:]) / 3
+                if avg >= 0.8:
+                    reward.score = min(1.0, reward.score + 0.05)
+                    reward.feedback += " | +0.05 consistency bonus"
             self.last_reward = 0.0
             self.last_feedback = reward.feedback
             return {
