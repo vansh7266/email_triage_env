@@ -545,13 +545,13 @@ def grade_task3(action: EmailAction, ground_truth: dict) -> EmailReward:
     )
 class EmailTriageEnvEnvironment:
     def __init__(self):
-        self.episode_scores = []
         self.current_email: dict = {}
         self.current_task: int = 1
         self.step_count: int = 0
         self.last_reward: float = 0.0
         self.last_feedback: str = ""
         self.done: bool = False
+        self.episode_scores = []
         self.task1_emails = [e for e in EMAIL_DATASET if e["task_id"] == 1]
         self.task2_emails = [e for e in EMAIL_DATASET if e["task_id"] == 2]
         self.task3_emails = [e for e in EMAIL_DATASET if e["task_id"] == 3]
