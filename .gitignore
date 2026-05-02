@@ -30,3 +30,7 @@ Thumbs.db
 # Outputs
 outputs/
 logs/
+
+client_secret*.json
+.env
+token.json

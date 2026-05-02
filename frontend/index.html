@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TriageAI — Smart Email Routing</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="8" fill="#1A73E8" />
+                    <path d="M6 10l10 7 10-7" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    <rect x="6" y="10" width="20" height="14" rx="2" stroke="white" stroke-width="2" fill="none" />
+                </svg>
+                <span class="logo-text">TriageAI</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how">How it works</a>
+                <a href="/auth/login" class="btn-primary">Connect Gmail</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge reveal">Built on Meta OpenEnv · Top 200 of 52,000 developers</div>
+            <h1 class="hero-title reveal delay-100">
+                Your inbox,<br>
+                <span class="gradient-text"><span class="typing-text"></span><span class="cursor">|</span></span>
+            </h1>
+            <p class="hero-subtitle reveal delay-200">
+                TriageAI reads your support emails and automatically categorizes,
+                prioritizes, routes, and escalates them — so your team focuses on what matters.
+            </p>
+            <div class="hero-actions reveal delay-300">
+                <a href="/auth/login" class="btn-primary btn-large">
+                    <svg width="20" height="20" viewBox="0 0 48 48">
+                        <path
+                            d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 2.9l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"
+                            fill="#FFC107" />
+                        <path
+                            d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.8 1.1 8 2.9l5.7-5.7C34.6 6.1 29.6 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"
+                            fill="#FF3D00" />
+                        <path
+                            d="M24 44c5.5 0 10.4-2 14.1-5.2l-6.5-5.5C29.6 35 26.9 36 24 36c-5.2 0-9.6-3.3-11.3-8H6.2C9.5 35.6 16.3 44 24 44z"
+                            fill="#4CAF50" />
+                        <path
+                            d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.3 4.1-4.2 5.4l6.5 5.5C37.4 39.4 44 34.4 44 24c0-1.3-.1-2.6-.4-3.9z"
+                            fill="#1976D2" />
+                    </svg>
+                    Connect with Google
+                </a>
+                <a href="#how" class="btn-outline btn-large">See how it works</a>
+            </div>
+
+            <!-- HERO ILLUSTRATION -->
+            <div class="hero-illustration reveal delay-300" id="hero-illustration">
+                <div class="illustration-inner">
+                    <div class="ill-inbox">
+                        <div class="ill-header">
+                            <span class="ill-dot red"></span>
+                            <span class="ill-dot yellow"></span>
+                            <span class="ill-dot green"></span>
+                            <span class="ill-title">Inbox</span>
+                        </div>
+                        <div class="ill-email">
+                            <div class="ill-avatar">J</div>
+                            <div class="ill-lines">
+                                <div class="ill-line w80"></div>
+                                <div class="ill-line w50"></div>
+                            </div>
+                        </div>
+                        <div class="ill-email">
+                            <div class="ill-avatar blue">S</div>
+                            <div class="ill-lines">
+                                <div class="ill-line w90"></div>
+                                <div class="ill-line w60"></div>
+                            </div>
+                        </div>
+                        <div class="ill-email">
+                            <div class="ill-avatar green">A</div>
+                            <div class="ill-lines">
+                                <div class="ill-line w70"></div>
+                                <div class="ill-line w40"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ill-arrow">
+                        <svg width="40" height="16" viewBox="0 0 40 16">
+                            <path d="M0 8h36M30 2l6 6-6 6" stroke="#1A73E8" stroke-width="2" stroke-linecap="round"
+                                fill="none" />
+                        </svg>
+                        <div class="ill-ai-label">AI</div>
+                    </div>
+
+                    <div class="ill-output">
+                        <div class="ill-tag billing">💳 Billing · High</div>
+                        <div class="ill-tag tech">🔧 Technical · Medium</div>
+                        <div class="ill-tag escalate">🚨 Escalate · Critical</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats">
+        <div class="stats-inner">
+            <div class="stat reveal">
+                <div class="stat-number">52,000+</div>
+                <div class="stat-label">Developers competed</div>
+            </div>
+            <div class="stat reveal delay-100">
+                <div class="stat-number">Top 200</div>
+                <div class="stat-label">Meta Hackathon finalists</div>
+            </div>
+            <div class="stat reveal delay-200">
+                <div class="stat-number">0.95</div>
+                <div class="stat-label">Baseline accuracy score</div>
+            </div>
+            <div class="stat reveal delay-300">
+                <div class="stat-number">&lt;1s</div>
+                <div class="stat-label">Response time</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <div class="section-inner">
+            <p class="section-eyebrow reveal">Features</p>
+            <h2 class="section-title reveal">Everything your support team needs</h2>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon" style="background:#E8F0FE;color:#1A73E8">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3>Smart Categorization</h3>
+                    <p>Classifies emails into billing, technical support, complaints, general inquiries, and spam
+                        automatically.</p>
+                </div>
+                <div class="feature-card reveal delay-100">
+                    <div class="feature-icon" style="background:#FEF3E2;color:#E37400">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h3>Priority Detection</h3>
+                    <p>Assigns low, medium, or high priority based on content, urgency signals, and business impact.</p>
+                </div>
+                <div class="feature-card reveal delay-200">
+                    <div class="feature-icon" style="background:#E6F4EA;color:#1E8E3E">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <path
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" />
+                        </svg>
+                    </div>
+                    <h3>Department Routing</h3>
+                    <p>Routes each email to the right team — finance, engineering, customer success, sales, or security.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon" style="background:#FCE8E6;color:#C5221F">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <path
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                    </div>
+                    <h3>Escalation Alerts</h3>
+                    <p>Flags critical emails needing immediate human attention — legal threats, data breaches, churn
+                        risk.</p>
+                </div>
+                <div class="feature-card reveal delay-100">
+                    <div class="feature-icon" style="background:#F3E8FD;color:#7B1FA2">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <path
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Track triage accuracy, response patterns, and team performance with live dashboard metrics.</p>
+                </div>
+                <div class="feature-card reveal delay-200">
+                    <div class="feature-icon" style="background:#E8F0FE;color:#1A73E8">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <path
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                    </div>
+                    <h3>Secure OAuth</h3>
+                    <p>Read-only Gmail access via Google OAuth 2.0. We never store your emails. Privacy first.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how" id="how">
+        <div class="section-inner">
+            <p class="section-eyebrow reveal">How it works</p>
+            <h2 class="section-title reveal">Three steps to a smarter inbox</h2>
+            <div class="steps">
+                <div class="step reveal">
+                    <div class="step-content">
+                        <span class="step-number">Step 01</span>
+                        <h3>Connect your Gmail</h3>
+                        <p>Sign in securely with Google. We request read-only access to your inbox. No emails are ever
+                            stored on our servers.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="gmail-visual">
+                            <div class="gmail-icon">M</div>
+                            <div class="gmail-text">Gmail Connected</div>
+                            <div class="gmail-check">✓</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step reveal">
+                    <div class="step-visual">
+                        <div class="ai-processing">
+                            <div class="ai-bar-wrap">
+                                <div class="ai-bar"></div>
+                            </div>
+                            <div class="ai-bar-wrap">
+                                <div class="ai-bar v2"></div>
+                            </div>
+                            <div class="ai-bar-wrap">
+                                <div class="ai-bar v3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-content">
+                        <span class="step-number">Step 02</span>
+                        <h3>AI reads and triages</h3>
+                        <p>Our RL-trained agent reads each email in milliseconds — category, priority, department,
+                            escalation.</p>
+                    </div>
+                </div>
+                <div class="step reveal">
+                    <div class="step-content">
+                        <span class="step-number">Step 03</span>
+                        <h3>See results instantly</h3>
+                        <p>Your dashboard updates live, showing every email triaged with confidence scores and routing
+                            decisions.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="dashboard-visual">
+                            <div class="mini-row"><span class="mini-tag blue">Billing</span><span
+                                    class="mini-score">0.95</span></div>
+                            <div class="mini-row"><span class="mini-tag red">Escalate</span><span
+                                    class="mini-score">0.99</span></div>
+                            <div class="mini-row"><span class="mini-tag green">Support</span><span
+                                    class="mini-score">0.88</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="cta-inner reveal">
+            <h2>Ready to triage smarter?</h2>
+            <p>Connect your Gmail and experience an intelligently categorized inbox.</p>
+            <a href="/auth/login" class="btn-primary btn-large">Get started for free</a>
+            <div class="cta-note">No credit card required · Read-only access · Open source</div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="8" fill="#5F6368" />
+                    <path d="M6 10l10 7 10-7" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    <rect x="6" y="10" width="20" height="14" rx="2" stroke="white" stroke-width="2" fill="none" />
+                </svg>
+                <span class="logo-text" style="font-size:16px;color:white">TriageAI</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/vansh7266/email_triage_env" target="_blank">GitHub</a>
+                <a href="https://huggingface.co/spaces/vansh7266/email_triage_env" target="_blank">HuggingFace</a>
+            </div>
+            <div class="footer-copy">Built by Team Exception · Meta OpenEnv Hackathon 2026</div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Typing effect
+        const phrases = ['intelligently triaged.', 'routed in milliseconds.', 'perfectly organized.', 'instantly prioritized.'];
+        let pi = 0, ci = 0, deleting = false;
+        const el = document.querySelector('.typing-text');
+        function type() {
+            const phrase = phrases[pi];
+            el.textContent = deleting ? phrase.substring(0, ci - 1) : phrase.substring(0, ci + 1);
+            deleting ? ci-- : ci++;
+            let speed = deleting ? 40 : 80;
+            if (!deleting && ci === phrase.length) { speed = 2000; deleting = true; }
+            else if (deleting && ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; speed = 500; }
+            setTimeout(type, speed);
+        }
+        setTimeout(type, 1000);
+
+        // 3D parallax on hero illustration
+        const heroEl = document.querySelector('.hero');
+        const illEl = document.getElementById('hero-illustration');
+        heroEl.addEventListener('mousemove', (e) => {
+            if (window.innerWidth > 900) {
+                const x = (window.innerWidth / 2 - e.pageX) / 40;
+                const y = (window.innerHeight / 2 - e.pageY) / 40;
+                illEl.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            }
+        });
+        heroEl.addEventListener('mouseleave', () => { illEl.style.transform = 'rotateY(0) rotateX(0)'; });
+    </script>
+</body>
+
+</html>
