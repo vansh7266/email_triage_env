@@ -103,6 +103,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: all 0.3s var(--ease);
             font-family: 'Inter', sans-serif;
@@ -175,11 +176,17 @@
         .content-title {
             font-size: 18px;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .filter-row {
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
+            max-width: 60%;
+            justify-content: flex-end;
         }
 
         .filter-btn {
@@ -193,6 +200,7 @@
             color: var(--text-muted);
             transition: all 0.2s;
             font-family: 'Inter', sans-serif;
+            white-space: nowrap;
         }
 
         .filter-btn.active,
@@ -207,6 +215,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            margin-bottom: 24px;
         }
 
         .email-card {
@@ -259,6 +268,8 @@
             font-size: 15px;
             font-weight: 600;
             margin-bottom: 6px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .email-body {
@@ -266,10 +277,9 @@
             color: var(--text-muted);
             line-height: 1.6;
             margin-bottom: 12px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
         }
 
         .email-tags {
@@ -285,29 +295,10 @@
             font-weight: 600;
         }
 
-        .tag-billing {
+        .tag-dynamic {
             background: #E8F0FE;
             color: #1A73E8;
-        }
-
-        .tag-technical {
-            background: #FEF3E2;
-            color: #E37400;
-        }
-
-        .tag-complaint {
-            background: #FCE8E6;
-            color: #C5221F;
-        }
-
-        .tag-general {
-            background: #E6F4EA;
-            color: #1E8E3E;
-        }
-
-        .tag-spam {
-            background: #F1F3F4;
-            color: #5F6368;
+            text-transform: capitalize;
         }
 
         .tag-high {
@@ -334,6 +325,7 @@
         .tag-dept {
             background: #F3E8FD;
             color: #7B1FA2;
+            text-transform: capitalize;
         }
 
         .email-score-col {
@@ -410,6 +402,20 @@
             transition: width 0.3s ease;
             margin-bottom: 24px;
         }
+        
+        .fetching-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
         /* TOAST */
         .toast {
@@ -464,14 +470,15 @@
         </div>
         <div class="topbar-right">
             <span class="user-badge" id="user-email">Loading...</span>
-            <button class="btn-triage" id="triage-btn" onclick="runTriage()">
+            <button class="btn-triage" id="triage-btn" onclick="runTriage(100)">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                     <polyline points="22,6 12,13 2,6" />
                 </svg>
-                Triage Inbox
+                Triage Inbox (up to 100)
             </button>
+            <a href="/auth/logout" class="user-badge" style="text-decoration:none;cursor:pointer;">Logout</a>
         </div>
     </div>
 
@@ -497,21 +504,20 @@
                 <div class="sub">need attention</div>
             </div>
             <div class="stat-card">
-                <div class="label">Top Category</div>
-                <div class="value" id="stat-top-cat" style="font-size:16px;padding-top:6px">—</div>
+                <div class="label">Top Topic</div>
+                <div class="value" id="stat-top-cat" style="font-size:16px;padding-top:6px;text-transform:capitalize;">—</div>
                 <div class="sub">most common</div>
             </div>
         </div>
 
         <!-- EMAIL LIST -->
         <div class="content-header">
-            <div class="content-title">Triaged Emails</div>
-            <div class="filter-row">
+            <div class="content-title">
+                Triaged Emails <span id="fetch-status" style="font-size: 13px; font-weight: normal; color: var(--text-muted);"></span>
+            </div>
+            <div class="filter-row" id="filter-row">
                 <button class="filter-btn active" onclick="filterEmails('all', this)">All</button>
                 <button class="filter-btn" onclick="filterEmails('escalate', this)">🚨 Escalate</button>
-                <button class="filter-btn" onclick="filterEmails('billing', this)">💳 Billing</button>
-                <button class="filter-btn" onclick="filterEmails('technical_support', this)">🔧 Technical</button>
-                <button class="filter-btn" onclick="filterEmails('complaint', this)">😠 Complaints</button>
             </div>
         </div>
 
@@ -519,9 +525,15 @@
             <div class="empty-state">
                 <div class="empty-icon">📬</div>
                 <div class="empty-title">No emails triaged yet</div>
-                <div class="empty-sub">Click "Triage Inbox" to fetch and analyse your latest emails.</div>
-                <button class="btn-triage" onclick="runTriage()">Start Triaging</button>
+                <div class="empty-sub">Click "Triage Inbox" to fetch and analyse up to 100 emails automatically.</div>
+                <button class="btn-triage" onclick="runTriage(100)">Start Triaging</button>
             </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn-triage" id="load-more-btn" style="display: none; margin: 0 auto;" onclick="runTriage(100)">
+                Load 100 More Mails
+            </button>
         </div>
     </div>
 
@@ -531,61 +543,185 @@
     <script>
         let allEmails = [];
         let currentFilter = 'all';
+        let nextPageToken = null;
+        let isFetching = false;
+        let cancelFetching = false;
 
-        async function runTriage() {
-            const btn = document.getElementById('triage-btn');
-            const bar = document.getElementById('loading-bar');
-            btn.disabled = true;
-            btn.textContent = 'Triaging...';
-            bar.style.width = '30%';
-
-            try {
-                bar.style.width = '60%';
-                const res = await fetch('/triage', { method: 'POST' });
-                bar.style.width = '90%';
-
-                if (!res.ok) {
-                    const err = await res.json();
-                    showToast('Error: ' + (err.detail || 'Something went wrong'));
-                    return;
-                }
-
-                const data = await res.json();
-                allEmails = data.results;
-                bar.style.width = '100%';
-                setTimeout(() => { bar.style.width = '0'; }, 500);
-
-                updateStats(data);
-                renderEmails(allEmails);
-                showToast(`✅ Triaged ${allEmails.length} emails successfully!`);
-            } catch (e) {
-                showToast('Network error. Is the server running?');
-                bar.style.width = '0';
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Triage Inbox`;
+        function stopFetching() {
+            if (isFetching) {
+                cancelFetching = true;
+                const btn = document.getElementById('triage-btn');
+                const loadMoreBtn = document.getElementById('load-more-btn');
+                const html = `<span class="fetching-spinner"></span> Stopping...`;
+                btn.innerHTML = html;
+                if(loadMoreBtn) loadMoreBtn.innerHTML = html;
             }
         }
 
-        function updateStats(data) {
-            document.getElementById('stat-total').textContent = data.results.length;
-            const avg = data.results.reduce((s, e) => s + e.score, 0) / data.results.length;
+        async function runTriage(limit = 100) {
+            if (isFetching) return;
+            isFetching = true;
+            cancelFetching = false;
+
+            const btn = document.getElementById('triage-btn');
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            const bar = document.getElementById('loading-bar');
+            const statusText = document.getElementById('fetch-status');
+            
+            const oldHtml = btn.innerHTML;
+            const stopBtnHtml = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect></svg> Stop Fetching`;
+            
+            btn.innerHTML = stopBtnHtml;
+            btn.style.backgroundColor = 'var(--red)';
+            btn.onclick = stopFetching;
+            
+            if (loadMoreBtn.style.display !== 'none') {
+                loadMoreBtn.innerHTML = stopBtnHtml;
+                loadMoreBtn.style.backgroundColor = 'var(--red)';
+                loadMoreBtn.onclick = stopFetching;
+            }
+            
+            bar.style.width = '10%';
+            
+            let emailsThisRun = 0;
+
+            try {
+                while (emailsThisRun < limit) {
+                    if (cancelFetching) {
+                        statusText.textContent = `(Stopped by user)`;
+                        showToast('Fetching stopped.');
+                        break;
+                    }
+                    
+                    bar.style.width = Math.min(10 + (emailsThisRun/limit)*80, 90) + '%';
+                    statusText.textContent = `(Processing batch... ${allEmails.length} fetched so far)`;
+                    
+                    const reqBody = { page_token: nextPageToken };
+                    const res = await fetch('/triage', { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(reqBody),
+                        credentials: 'include' 
+                    });
+
+                    if (!res.ok) {
+                        const err = await res.json();
+                        if (res.status === 401) {
+                            showToast('Session expired. Redirecting to login...');
+                            setTimeout(() => { window.location.href = '/auth/login'; }, 1500);
+                            return;
+                        }
+                        showToast('Error: ' + (err.detail || 'Something went wrong'));
+                        break;
+                    }
+
+                    const data = await res.json();
+                    
+                    if (!data.results || data.results.length === 0) {
+                        statusText.textContent = `(All mails are fetched)`;
+                        loadMoreBtn.style.display = 'none';
+                        break;
+                    }
+
+                    allEmails.push(...data.results);
+                    nextPageToken = data.next_page_token;
+                    emailsThisRun += data.results.length;
+                    
+                    updateStats();
+                    renderDynamicFilters();
+                    filterEmails(currentFilter, document.querySelector('.filter-btn.active'));
+                    
+                    if (!nextPageToken) {
+                        statusText.textContent = `(All mails are fetched)`;
+                        loadMoreBtn.style.display = 'none';
+                        break;
+                    }
+                }
+
+                bar.style.width = '100%';
+                setTimeout(() => { bar.style.width = '0'; }, 500);
+                
+                if (emailsThisRun > 0) {
+                    showToast(`✅ Triaged new emails successfully!`);
+                }
+                
+                if (!cancelFetching && nextPageToken) {
+                    loadMoreBtn.style.display = 'block';
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.innerHTML = 'Load 100 More Mails';
+                    statusText.textContent = `(${allEmails.length} loaded)`;
+                } else if (cancelFetching && nextPageToken) {
+                    loadMoreBtn.style.display = 'block';
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.innerHTML = 'Resume Fetching';
+                    statusText.textContent = `(${allEmails.length} loaded - Stopped)`;
+                }
+
+            } catch (e) {
+                showToast('Network error. Is the server running?');
+                bar.style.width = '0';
+                statusText.textContent = '';
+            } finally {
+                isFetching = false;
+                cancelFetching = false;
+                
+                btn.style.backgroundColor = '';
+                btn.innerHTML = oldHtml;
+                btn.onclick = () => runTriage(100);
+                
+                if (loadMoreBtn) {
+                    loadMoreBtn.style.backgroundColor = '';
+                    loadMoreBtn.onclick = () => runTriage(100);
+                }
+            }
+        }
+
+        function updateStats() {
+            if (!allEmails.length) return;
+            
+            document.getElementById('stat-total').textContent = allEmails.length;
+            const avg = allEmails.reduce((s, e) => s + e.score, 0) / allEmails.length;
             document.getElementById('stat-avg').textContent = avg.toFixed(2);
-            const escalations = data.results.filter(e => e.escalate).length;
+            const escalations = allEmails.filter(e => e.escalate).length;
             document.getElementById('stat-escalations').textContent = escalations;
+            
             const cats = {};
-            data.results.forEach(e => { cats[e.category] = (cats[e.category] || 0) + 1; });
+            allEmails.forEach(e => { cats[e.topic] = (cats[e.topic] || 0) + 1; });
             const top = Object.entries(cats).sort((a, b) => b[1] - a[1])[0];
-            document.getElementById('stat-top-cat').textContent = top ? top[0].replace('_', ' ') : '—';
+            document.getElementById('stat-top-cat').textContent = top ? top[0] : '—';
+        }
+
+        function renderDynamicFilters() {
+            const filterRow = document.getElementById('filter-row');
+            
+            // Keep "All" and "Escalate"
+            let html = `
+                <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="filterEmails('all', this)">All</button>
+                <button class="filter-btn ${currentFilter === 'escalate' ? 'active' : ''}" onclick="filterEmails('escalate', this)">🚨 Escalate</button>
+            `;
+            
+            // Find top 3 topics to show as filters
+            const cats = {};
+            allEmails.forEach(e => { cats[e.topic] = (cats[e.topic] || 0) + 1; });
+            const topTopics = Object.entries(cats).sort((a, b) => b[1] - a[1]).slice(0, 3).map(t => t[0]);
+            
+            topTopics.forEach(topic => {
+                html += `<button class="filter-btn ${currentFilter === topic ? 'active' : ''}" style="text-transform: capitalize;" onclick="filterEmails('${escHtml(topic)}', this)">🏷️ ${escHtml(topic)}</button>`;
+            });
+            
+            filterRow.innerHTML = html;
         }
 
         function filterEmails(filter, btn) {
             currentFilter = filter;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if (btn) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            
             const filtered = filter === 'all' ? allEmails
                 : filter === 'escalate' ? allEmails.filter(e => e.escalate)
-                    : allEmails.filter(e => e.category === filter);
+                    : allEmails.filter(e => e.topic === filter);
             renderEmails(filtered);
         }
 
@@ -596,7 +732,7 @@
                 return;
             }
             list.innerHTML = emails.map((e, i) => `
-    <div class="email-card ${e.escalate ? 'escalate' : ''}" style="animation-delay:${i * 60}ms">
+    <div class="email-card ${e.escalate ? 'escalate' : ''}" style="animation-delay:${(i % 10) * 60}ms">
       <div class="email-left">
         <div class="email-meta">
           <span class="email-sender">${escHtml(e.sender)}</span>
@@ -605,9 +741,9 @@
         <div class="email-subject">${escHtml(e.subject)}</div>
         <div class="email-body">${escHtml(e.body)}</div>
         <div class="email-tags">
-          <span class="tag tag-${e.category.replace('_', '-')}">${catLabel(e.category)}</span>
+          <span class="tag tag-dynamic">🏷️ ${escHtml(e.topic)}</span>
           <span class="tag tag-${e.priority}">${e.priority.toUpperCase()}</span>
-          <span class="tag tag-dept">🏢 ${e.department.replace('_', ' ')}</span>
+          <span class="tag tag-dept">🏢 ${escHtml(e.department).replace('_', ' ')}</span>
         </div>
       </div>
       <div class="email-score-col">
@@ -618,10 +754,6 @@
   `).join('');
         }
 
-        function catLabel(cat) {
-            const m = { billing: '💳 Billing', technical_support: '🔧 Technical', complaint: '😠 Complaint', general_inquiry: '💬 General', spam: '🚫 Spam' };
-            return m[cat] || cat;
-        }
         function scoreClass(s) {
             return s >= 0.7 ? 'score-high' : s >= 0.4 ? 'score-mid' : 'score-low';
         }
@@ -635,9 +767,15 @@
             setTimeout(() => t.classList.remove('show'), 3500);
         }
 
-        // Load user info
-        fetch('/auth/me').then(r => r.json()).then(d => {
-            document.getElementById('user-email').textContent = d.email || 'Connected';
+        // Load user info — redirect to login if not authenticated
+        fetch('/auth/me', { credentials: 'include' }).then(r => {
+            if (r.status === 401) {
+                window.location.href = '/auth/login';
+                return null;
+            }
+            return r.json();
+        }).then(d => {
+            if (d) document.getElementById('user-email').textContent = d.email || 'Connected';
         }).catch(() => {
             document.getElementById('user-email').textContent = 'Connected';
         });

@@ -4,3 +4,10 @@ pydantic>=2.11.7
 requests
 openai>=2.7.2
 openenv-core==0.2.3
+python-dotenv
+google-auth
+google-auth-oauthlib
+google-api-python-client
+cryptography
+slowapi
+itsdangerous

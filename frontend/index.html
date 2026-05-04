@@ -5,11 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TriageAI — Smart Email Routing</title>
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <!-- SPLASH SCREEN -->
+    <div id="splash" class="splash">
+        <div class="splash-logo">
+            <svg width="48" height="48" viewBox="0 0 32 32" fill="none">
+                <rect width="32" height="32" rx="8" fill="#1A73E8" />
+                <path d="M6 10l10 7 10-7" stroke="white" stroke-width="2" stroke-linecap="round" />
+                <rect x="6" y="10" width="20" height="14" rx="2" stroke="white" stroke-width="2" fill="none" />
+            </svg>
+            TriageAI
+        </div>
+        <div class="splash-spinner"></div>
+    </div>
 
     <div class="bg-grid"></div>
     <div class="bg-glow"></div>
@@ -342,6 +354,14 @@
             }
         });
         heroEl.addEventListener('mouseleave', () => { illEl.style.transform = 'rotateY(0) rotateX(0)'; });
+        
+        // Splash screen dismiss
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('splash').classList.add('hidden');
+                setTimeout(() => document.getElementById('splash').style.display = 'none', 600);
+            }, 800);
+        });
     </script>
 </body>
 

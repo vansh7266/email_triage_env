@@ -10,3 +10,8 @@ venv
 outputs
 logs
 baseline_scores.json
+.env
+.env.*
+tests/
+.pytest_cache
+.github

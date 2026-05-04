@@ -37,6 +37,9 @@ COPY server/ ./server/
 # Copy the openenv.yaml metadata file
 COPY openenv.yaml .
 
+# Copy the frontend directory (landing page, dashboard, static assets)
+COPY frontend/ ./frontend/
+
 # ── EXPOSE PORT ────────────────────────────────────────────
 # HuggingFace Spaces requires port 7860
 # For local dev, use: uvicorn server.app:app --port 8000
