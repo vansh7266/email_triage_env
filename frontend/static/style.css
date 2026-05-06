@@ -424,6 +424,9 @@ svg { flex-shrink: 0; }
     border-right: 3px solid currentColor;
     padding-right: 4px;
     animation: blink-cursor 1.05s step-end infinite;
+    display: inline-block;
+    min-height: 1.2em;
+    white-space: nowrap;
 }
 @keyframes blink-cursor {
     from, to { border-color: transparent; }
