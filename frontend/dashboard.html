@@ -1,785 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard — TriageAI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #1A73E8;
-            --text-main: #202124;
-            --text-muted: #5F6368;
-            --bg: #F8F9FA;
-            --white: #FFFFFF;
-            --border: #DADCE0;
-            --green: #1E8E3E;
-            --red: #C5221F;
-            --orange: #E37400;
-            --ease: cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* TOPBAR */
-        .topbar {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            padding: 0 32px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-mark {
-            width: 32px;
-            height: 32px;
-            background: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-mark svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        .logo-name {
-            font-weight: 700;
-            font-size: 18px;
-            letter-spacing: -0.5px;
-        }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .user-badge {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            padding: 6px 14px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .btn-triage {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 100px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s var(--ease);
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-triage:hover {
-            background: #1557B0;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(26, 115, 232, 0.3);
-        }
-
-        .btn-triage:disabled {
-            background: #BDC1C6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* MAIN LAYOUT */
-        .main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 32px 24px;
-        }
-
-        /* STATS ROW */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .stat-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px 24px;
-        }
-
-        .stat-card .label {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-weight: 500;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-card .value {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .stat-card .sub {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        /* CONTENT AREA */
-        .content-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-
-        .content-title {
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .filter-row {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            max-width: 60%;
-            justify-content: flex-end;
-        }
-
-        .filter-btn {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            padding: 6px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
-            white-space: nowrap;
-        }
-
-        .filter-btn.active,
-        .filter-btn:hover {
-            background: #E8F0FE;
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* EMAIL CARDS */
-        .email-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .email-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px 24px;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 16px;
-            align-items: start;
-            transition: box-shadow 0.2s, transform 0.2s;
-            animation: slideIn 0.4s var(--ease) both;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .email-card:hover {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
-            transform: translateY(-2px);
-        }
-
-        .email-card.escalate {
-            border-left: 4px solid var(--red);
-        }
-
-        .email-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 6px;
-        }
-
-        .email-sender {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .email-subject {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .email-body {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 12px;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: pre-wrap;
-        }
-
-        .email-tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .tag-dynamic {
-            background: #E8F0FE;
-            color: #1A73E8;
-            text-transform: capitalize;
-        }
-
-        .tag-high {
-            background: #FCE8E6;
-            color: #C5221F;
-        }
-
-        .tag-medium {
-            background: #FEF3E2;
-            color: #E37400;
-        }
-
-        .tag-low {
-            background: #E6F4EA;
-            color: #1E8E3E;
-        }
-
-        .tag-escalate {
-            background: #FCE8E6;
-            color: #C5221F;
-            font-weight: 700;
-        }
-
-        .tag-dept {
-            background: #F3E8FD;
-            color: #7B1FA2;
-            text-transform: capitalize;
-        }
-
-        .email-score-col {
-            text-align: right;
-            min-width: 80px;
-        }
-
-        .score-circle {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-            margin-left: auto;
-            margin-bottom: 6px;
-            border: 3px solid var(--border);
-        }
-
-        .score-high {
-            border-color: var(--green);
-            color: var(--green);
-        }
-
-        .score-mid {
-            border-color: var(--orange);
-            color: var(--orange);
-        }
-
-        .score-low {
-            border-color: var(--red);
-            color: var(--red);
-        }
-
-        .score-label {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        /* EMPTY STATE */
-        .empty-state {
-            text-align: center;
-            padding: 80px 24px;
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-        }
-
-        .empty-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-        }
-
-        .empty-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .empty-sub {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-        }
-
-        /* LOADING */
-        .loading-bar {
-            height: 3px;
-            background: var(--primary);
-            border-radius: 2px;
-            width: 0;
-            transition: width 0.3s ease;
-            margin-bottom: 24px;
-        }
-        
-        .fetching-spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* TOAST */
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: #202124;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            transform: translateY(80px);
-            opacity: 0;
-            transition: all 0.3s var(--ease);
-            z-index: 100;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        @media (max-width: 768px) {
-            .stats-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .topbar {
-                padding: 0 16px;
-            }
-
-            .main {
-                padding: 20px 16px;
-            }
-        }
-    </style>
+    <title>TriageAI — Dashboard</title>
+    <meta name="description" content="Review AI-triaged Gmail messages. Filter by priority, department, and escalation. Click any card to open in Gmail.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/dashboard.css?v=__ASSET_VERSION__">
 </head>
+<body class="dashboard-body">
 
-<body>
-
-    <!-- TOPBAR -->
-    <div class="topbar">
-        <div class="topbar-left">
-            <div class="logo-mark">
-                <svg viewBox="0 0 32 32" fill="none">
-                    <path d="M6 10l10 7 10-7" stroke="white" stroke-width="2" stroke-linecap="round" />
-                    <rect x="6" y="10" width="20" height="14" rx="2" stroke="white" stroke-width="2" fill="none" />
+    <!-- Splash -->
+    <div class="splash" id="splash-screen" aria-hidden="true">
+        <div class="splash-inner">
+            <div class="splash-logo">
+                <svg width="52" height="52" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                    <rect width="40" height="40" rx="12" fill="url(#ds)"/>
+                    <path d="M10 14l10 8 10-8" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect x="10" y="14" width="20" height="14" rx="3" stroke="white" stroke-width="2.5" fill="none"/>
+                    <defs>
+                        <linearGradient id="ds" x1="0" y1="0" x2="40" y2="40">
+                            <stop stop-color="#6366f1"/>
+                            <stop offset="1" stop-color="#8b5cf6"/>
+                        </linearGradient>
+                    </defs>
                 </svg>
             </div>
-            <span class="logo-name">TriageAI</span>
-        </div>
-        <div class="topbar-right">
-            <span class="user-badge" id="user-email">Loading...</span>
-            <button class="btn-triage" id="triage-btn" onclick="runTriage(100)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                    <polyline points="22,6 12,13 2,6" />
-                </svg>
-                Triage Inbox (up to 100)
-            </button>
-            <a href="/auth/logout" class="user-badge" style="text-decoration:none;cursor:pointer;">Logout</a>
+            <p class="splash-name">TriageAI</p>
+            <p class="splash-sub" id="splash-copy">Loading your workspace...</p>
+            <div class="splash-bar-wrap"><span class="splash-bar"></span></div>
         </div>
     </div>
 
-    <!-- MAIN -->
-    <div class="main">
-        <div class="loading-bar" id="loading-bar"></div>
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a href="/" class="logo" aria-label="TriageAI home">
+                <div class="logo-icon">
+                    <svg width="36" height="36" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                        <rect width="40" height="40" rx="12" fill="url(#tg)"/>
+                        <path d="M10 14l10 8 10-8" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <rect x="10" y="14" width="20" height="14" rx="3" stroke="white" stroke-width="2.5" fill="none"/>
+                        <defs>
+                            <linearGradient id="tg" x1="0" y1="0" x2="40" y2="40">
+                                <stop stop-color="#6366f1"/>
+                                <stop offset="1" stop-color="#8b5cf6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">TriageAI</span>
+            </a>
 
-        <!-- STATS -->
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="label">Emails Triaged</div>
-                <div class="value" id="stat-total">0</div>
-                <div class="sub">from your inbox</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Avg Score</div>
-                <div class="value" id="stat-avg">—</div>
-                <div class="sub">accuracy</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Escalations</div>
-                <div class="value" id="stat-escalations" style="color:#C5221F">0</div>
-                <div class="sub">need attention</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Top Topic</div>
-                <div class="value" id="stat-top-cat" style="font-size:16px;padding-top:6px;text-transform:capitalize;">—</div>
-                <div class="sub">most common</div>
+            <div class="topbar-actions">
+                <div class="session-pill">
+                    <span class="session-dot"></span>
+                    <span>Secure session</span>
+                </div>
+                <div class="user-chip" id="user-email">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-5.5-2.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zM10 12a5.99 5.99 0 00-4.793 2.39A6.483 6.483 0 0010 16.5a6.483 6.483 0 004.793-2.11A5.99 5.99 0 0010 12z" clip-rule="evenodd"/></svg>
+                    Loading...
+                </div>
+                <form method="post" action="/auth/logout">
+                    <button type="submit" class="logout-btn" aria-label="Sign out">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M6 10a.75.75 0 01.75-.75h9.546l-1.048-.943a.75.75 0 111.004-1.114l2.5 2.25a.75.75 0 010 1.114l-2.5 2.25a.75.75 0 11-1.004-1.114l1.048-.943H6.75A.75.75 0 016 10z" clip-rule="evenodd"/></svg>
+                        Sign out
+                    </button>
+                </form>
             </div>
         </div>
+    </header>
 
-        <!-- EMAIL LIST -->
-        <div class="content-header">
-            <div class="content-title">
-                Triaged Emails <span id="fetch-status" style="font-size: 13px; font-weight: normal; color: var(--text-muted);"></span>
+    <div class="dash-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <p class="sidebar-label">Triage Controls</p>
+                <button type="button" class="triage-btn" id="triage-btn">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.43l.31.31a7 7 0 0011.712-3.138.75.75 0 00-1.449-.39zm1.23-3.723a.75.75 0 00.219-.53V2.929a.75.75 0 00-1.5 0V5.36l-.31-.31A7 7 0 003.239 8.188a.75.75 0 101.448.389A5.5 5.5 0 0113.89 6.11l.311.31h-2.432a.75.75 0 000 1.5h4.243a.75.75 0 00.53-.219z" clip-rule="evenodd"/></svg>
+                    Start Triage
+                </button>
+                <button type="button" class="stop-btn is-hidden" id="stop-btn">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zM12.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z"/></svg>
+                    Stop after batch
+                </button>
+                <button type="button" class="load-more-btn is-hidden" id="load-more-btn">Load 100 more</button>
+                <div class="fetch-status-row">
+                    <span class="fetch-status" id="fetch-status">Ready to start</span>
+                </div>
+                <div class="progress-wrap">
+                    <div class="progress-track">
+                        <span class="progress-fill" id="loading-bar" style="width:0%"></span>
+                    </div>
+                </div>
             </div>
-            <div class="filter-row" id="filter-row">
-                <button class="filter-btn active" onclick="filterEmails('all', this)">All</button>
-                <button class="filter-btn" onclick="filterEmails('escalate', this)">🚨 Escalate</button>
-            </div>
-        </div>
 
-        <div class="email-list" id="email-list">
-            <div class="empty-state">
-                <div class="empty-icon">📬</div>
-                <div class="empty-title">No emails triaged yet</div>
-                <div class="empty-sub">Click "Triage Inbox" to fetch and analyse up to 100 emails automatically.</div>
-                <button class="btn-triage" onclick="runTriage(100)">Start Triaging</button>
+            <div class="sidebar-section">
+                <p class="sidebar-label">Stats</p>
+                <div class="stat-row"><span class="stat-key">Triaged</span><strong class="stat-val" id="stat-total">0</strong></div>
+                <div class="stat-row"><span class="stat-key">Avg confidence</span><strong class="stat-val" id="stat-avg">0%</strong></div>
+                <div class="stat-row"><span class="stat-key">High priority</span><strong class="stat-val stat-danger" id="stat-high">0</strong></div>
+                <div class="stat-row"><span class="stat-key">Escalations</span><strong class="stat-val stat-escalate" id="stat-escalations">0</strong></div>
+                <div class="stat-row"><span class="stat-key">Top topic</span><strong class="stat-val stat-topic" id="stat-top-cat">—</strong></div>
             </div>
-        </div>
-        
-        <div style="text-align: center; margin-top: 20px;">
-            <button class="btn-triage" id="load-more-btn" style="display: none; margin: 0 auto;" onclick="runTriage(100)">
-                Load 100 More Mails
-            </button>
-        </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">Department Mix</p>
+                <div class="dept-list" id="department-list">
+                    <p class="sidebar-empty">Run triage to see distribution</p>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">Escalations &amp; Urgent</p>
+                <div class="watch-list" id="watch-list">
+                    <p class="sidebar-empty">High-priority cards appear here</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Queue -->
+        <main class="queue-main" aria-live="polite">
+            <div class="queue-header">
+                <div class="queue-title-row">
+                    <h1 class="queue-title">Email Queue</h1>
+                    <label class="sort-label" for="sort-select">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 01.628.74v2.288a2.25 2.25 0 01-.659 1.59l-4.682 4.683a2.25 2.25 0 00-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 018 18.25v-5.757a2.25 2.25 0 00-.659-1.591L2.659 6.22A2.25 2.25 0 012 4.629V2.34a.75.75 0 01.628-.74z" clip-rule="evenodd"/></svg>
+                        <select id="sort-select" aria-label="Sort emails">
+                            <option value="newest">Newest first</option>
+                            <option value="priority">Highest priority</option>
+                            <option value="confidence">Highest confidence</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="filter-bar" id="filter-row" aria-label="Queue filters" role="toolbar"></div>
+            </div>
+            <div class="email-list" id="email-list"></div>
+        </main>
     </div>
 
-    <!-- TOAST -->
-    <div class="toast" id="toast"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script>
-        let allEmails = [];
-        let currentFilter = 'all';
-        let nextPageToken = null;
-        let isFetching = false;
-        let cancelFetching = false;
-
-        function stopFetching() {
-            if (isFetching) {
-                cancelFetching = true;
-                const btn = document.getElementById('triage-btn');
-                const loadMoreBtn = document.getElementById('load-more-btn');
-                const html = `<span class="fetching-spinner"></span> Stopping...`;
-                btn.innerHTML = html;
-                if(loadMoreBtn) loadMoreBtn.innerHTML = html;
-            }
-        }
-
-        async function runTriage(limit = 100) {
-            if (isFetching) return;
-            isFetching = true;
-            cancelFetching = false;
-
-            const btn = document.getElementById('triage-btn');
-            const loadMoreBtn = document.getElementById('load-more-btn');
-            const bar = document.getElementById('loading-bar');
-            const statusText = document.getElementById('fetch-status');
-            
-            const oldHtml = btn.innerHTML;
-            const stopBtnHtml = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect></svg> Stop Fetching`;
-            
-            btn.innerHTML = stopBtnHtml;
-            btn.style.backgroundColor = 'var(--red)';
-            btn.onclick = stopFetching;
-            
-            if (loadMoreBtn.style.display !== 'none') {
-                loadMoreBtn.innerHTML = stopBtnHtml;
-                loadMoreBtn.style.backgroundColor = 'var(--red)';
-                loadMoreBtn.onclick = stopFetching;
-            }
-            
-            bar.style.width = '10%';
-            
-            let emailsThisRun = 0;
-
-            try {
-                while (emailsThisRun < limit) {
-                    if (cancelFetching) {
-                        statusText.textContent = `(Stopped by user)`;
-                        showToast('Fetching stopped.');
-                        break;
-                    }
-                    
-                    bar.style.width = Math.min(10 + (emailsThisRun/limit)*80, 90) + '%';
-                    statusText.textContent = `(Processing batch... ${allEmails.length} fetched so far)`;
-                    
-                    const reqBody = { page_token: nextPageToken };
-                    const res = await fetch('/triage', { 
-                        method: 'POST', 
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(reqBody),
-                        credentials: 'include' 
-                    });
-
-                    if (!res.ok) {
-                        const err = await res.json();
-                        if (res.status === 401) {
-                            showToast('Session expired. Redirecting to login...');
-                            setTimeout(() => { window.location.href = '/auth/login'; }, 1500);
-                            return;
-                        }
-                        showToast('Error: ' + (err.detail || 'Something went wrong'));
-                        break;
-                    }
-
-                    const data = await res.json();
-                    
-                    if (!data.results || data.results.length === 0) {
-                        statusText.textContent = `(All mails are fetched)`;
-                        loadMoreBtn.style.display = 'none';
-                        break;
-                    }
-
-                    allEmails.push(...data.results);
-                    nextPageToken = data.next_page_token;
-                    emailsThisRun += data.results.length;
-                    
-                    updateStats();
-                    renderDynamicFilters();
-                    filterEmails(currentFilter, document.querySelector('.filter-btn.active'));
-                    
-                    if (!nextPageToken) {
-                        statusText.textContent = `(All mails are fetched)`;
-                        loadMoreBtn.style.display = 'none';
-                        break;
-                    }
-                }
-
-                bar.style.width = '100%';
-                setTimeout(() => { bar.style.width = '0'; }, 500);
-                
-                if (emailsThisRun > 0) {
-                    showToast(`✅ Triaged new emails successfully!`);
-                }
-                
-                if (!cancelFetching && nextPageToken) {
-                    loadMoreBtn.style.display = 'block';
-                    loadMoreBtn.disabled = false;
-                    loadMoreBtn.innerHTML = 'Load 100 More Mails';
-                    statusText.textContent = `(${allEmails.length} loaded)`;
-                } else if (cancelFetching && nextPageToken) {
-                    loadMoreBtn.style.display = 'block';
-                    loadMoreBtn.disabled = false;
-                    loadMoreBtn.innerHTML = 'Resume Fetching';
-                    statusText.textContent = `(${allEmails.length} loaded - Stopped)`;
-                }
-
-            } catch (e) {
-                showToast('Network error. Is the server running?');
-                bar.style.width = '0';
-                statusText.textContent = '';
-            } finally {
-                isFetching = false;
-                cancelFetching = false;
-                
-                btn.style.backgroundColor = '';
-                btn.innerHTML = oldHtml;
-                btn.onclick = () => runTriage(100);
-                
-                if (loadMoreBtn) {
-                    loadMoreBtn.style.backgroundColor = '';
-                    loadMoreBtn.onclick = () => runTriage(100);
-                }
-            }
-        }
-
-        function updateStats() {
-            if (!allEmails.length) return;
-            
-            document.getElementById('stat-total').textContent = allEmails.length;
-            const avg = allEmails.reduce((s, e) => s + e.score, 0) / allEmails.length;
-            document.getElementById('stat-avg').textContent = avg.toFixed(2);
-            const escalations = allEmails.filter(e => e.escalate).length;
-            document.getElementById('stat-escalations').textContent = escalations;
-            
-            const cats = {};
-            allEmails.forEach(e => { cats[e.topic] = (cats[e.topic] || 0) + 1; });
-            const top = Object.entries(cats).sort((a, b) => b[1] - a[1])[0];
-            document.getElementById('stat-top-cat').textContent = top ? top[0] : '—';
-        }
-
-        function renderDynamicFilters() {
-            const filterRow = document.getElementById('filter-row');
-            
-            // Keep "All" and "Escalate"
-            let html = `
-                <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="filterEmails('all', this)">All</button>
-                <button class="filter-btn ${currentFilter === 'escalate' ? 'active' : ''}" onclick="filterEmails('escalate', this)">🚨 Escalate</button>
-            `;
-            
-            // Find top 3 topics to show as filters
-            const cats = {};
-            allEmails.forEach(e => { cats[e.topic] = (cats[e.topic] || 0) + 1; });
-            const topTopics = Object.entries(cats).sort((a, b) => b[1] - a[1]).slice(0, 3).map(t => t[0]);
-            
-            topTopics.forEach(topic => {
-                html += `<button class="filter-btn ${currentFilter === topic ? 'active' : ''}" style="text-transform: capitalize;" onclick="filterEmails('${escHtml(topic)}', this)">🏷️ ${escHtml(topic)}</button>`;
-            });
-            
-            filterRow.innerHTML = html;
-        }
-
-        function filterEmails(filter, btn) {
-            currentFilter = filter;
-            if (btn) {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
-            
-            const filtered = filter === 'all' ? allEmails
-                : filter === 'escalate' ? allEmails.filter(e => e.escalate)
-                    : allEmails.filter(e => e.topic === filter);
-            renderEmails(filtered);
-        }
-
-        function renderEmails(emails) {
-            const list = document.getElementById('email-list');
-            if (!emails.length) {
-                list.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No emails match this filter</div></div>`;
-                return;
-            }
-            list.innerHTML = emails.map((e, i) => `
-    <div class="email-card ${e.escalate ? 'escalate' : ''}" style="animation-delay:${(i % 10) * 60}ms">
-      <div class="email-left">
-        <div class="email-meta">
-          <span class="email-sender">${escHtml(e.sender)}</span>
-          ${e.escalate ? '<span class="tag tag-escalate">🚨 ESCALATE</span>' : ''}
-        </div>
-        <div class="email-subject">${escHtml(e.subject)}</div>
-        <div class="email-body">${escHtml(e.body)}</div>
-        <div class="email-tags">
-          <span class="tag tag-dynamic">🏷️ ${escHtml(e.topic)}</span>
-          <span class="tag tag-${e.priority}">${e.priority.toUpperCase()}</span>
-          <span class="tag tag-dept">🏢 ${escHtml(e.department).replace('_', ' ')}</span>
-        </div>
-      </div>
-      <div class="email-score-col">
-        <div class="score-circle ${scoreClass(e.score)}">${(e.score * 100).toFixed(0)}%</div>
-        <div class="score-label">confidence</div>
-      </div>
-    </div>
-  `).join('');
-        }
-
-        function scoreClass(s) {
-            return s >= 0.7 ? 'score-high' : s >= 0.4 ? 'score-mid' : 'score-low';
-        }
-        function escHtml(str) {
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3500);
-        }
-
-        // Load user info — redirect to login if not authenticated
-        fetch('/auth/me', { credentials: 'include' }).then(r => {
-            if (r.status === 401) {
-                window.location.href = '/auth/login';
-                return null;
-            }
-            return r.json();
-        }).then(d => {
-            if (d) document.getElementById('user-email').textContent = d.email || 'Connected';
-        }).catch(() => {
-            document.getElementById('user-email').textContent = 'Connected';
-        });
-    </script>
+    <script src="/static/dashboard.js?v=__ASSET_VERSION__" defer></script>
 </body>
-
 </html>
