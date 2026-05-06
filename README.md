@@ -267,6 +267,22 @@ self.current_email = random.choice(EMAIL_DATASET)
 
 ---
 
+## ⚠️ Google OAuth Warning (Testing & Production)
+
+When connecting your Gmail account for the first time, you may encounter a red **"Google hasn't verified this app"** warning screen. 
+
+This happens because TriageAI requests the `gmail.readonly` scope. Google classifies this as a "Restricted Scope" and requires a formal verification process (including a privacy policy, YouTube demo video, and security review) before removing the warning for the general public.
+
+**How to bypass this during testing:**
+This warning is 100% safe to bypass while testing the application yourself or with your team.
+1. On the warning screen, click the **"Advanced"** link at the bottom left.
+2. Click **"Go to TriageAI (unsafe)"**.
+3. You will be redirected back to the app and can use the dashboard normally.
+
+*Note: For a true public production launch, the developers must submit the app for Google's official App Verification through the Google Cloud Console to permanently remove this screen.*
+
+---
+
 ## 👥 Team
 
 **Team Exception**
