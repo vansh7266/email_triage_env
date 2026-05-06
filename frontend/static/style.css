@@ -418,3 +418,14 @@ svg { flex-shrink: 0; }
     .nav-toggle { display: flex; }
     .header-inner { gap: 16px; }
 }
+
+/* ── Typewriter Animation ── */
+.typewriter {
+    border-right: 3px solid currentColor;
+    padding-right: 4px;
+    animation: blink-cursor 1.05s step-end infinite;
+}
+@keyframes blink-cursor {
+    from, to { border-color: transparent; }
+    50% { border-color: currentColor; }
+}

@@ -110,3 +110,51 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
         }
     });
 })();
+
+// ── Typewriter Effect ────────────────────────────────────────────────────────
+(function setupTypewriters() {
+    const typewriters = document.querySelectorAll("[data-typewriter]");
+    if (!typewriters.length) return;
+
+    typewriters.forEach(el => {
+        const words = JSON.parse(el.getAttribute("data-typewriter-words") || "[]");
+        if (!words.length) return;
+
+        let wordIndex = 0;
+        let charIndex = words[0].length;
+        let isDeleting = false;
+        let delay = 2000;
+
+        el.textContent = words[0]; // Set initial word
+
+        function type() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                charIndex--;
+            } else {
+                charIndex++;
+            }
+
+            el.textContent = currentWord.substring(0, charIndex);
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                delay = 2500; // Pause when word is complete
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                delay = 500; // Pause before new word
+            } else {
+                delay = isDeleting ? 30 : 60; // Typing speed
+            }
+
+            setTimeout(type, delay);
+        }
+
+        setTimeout(() => {
+            isDeleting = true;
+            type();
+        }, 3000);
+    });
+})();
