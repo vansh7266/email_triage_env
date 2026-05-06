@@ -340,7 +340,6 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             "camera=(), microphone=(), geolocation=()"
         )
         if IS_PRODUCTION:
-            response.headers["X-Frame-Options"] = "DENY"
             response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
             response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
             response.headers["Content-Security-Policy"] = (
@@ -353,7 +352,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
                 "object-src 'none'; "
                 "base-uri 'self'; "
                 "form-action 'self'; "
-                "frame-ancestors 'none';"
+                "frame-ancestors 'self' https://huggingface.co;"
             )
             response.headers["Strict-Transport-Security"] = (
                 "max-age=63072000; includeSubDomains; preload"
